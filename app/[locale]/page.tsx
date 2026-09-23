@@ -54,7 +54,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
 
   return (
     <>
-      <SiteHeader locale={locale} t={t} />
+      <SiteHeader locale={locale} t={t} cases={cases} />
       <main id="conteudo">
         <Hero t={t} cases={cases} />
 

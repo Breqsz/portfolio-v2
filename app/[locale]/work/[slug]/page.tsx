@@ -61,7 +61,7 @@ export default async function CasePage({ params }: PageProps<"/[locale]/work/[sl
 
   return (
     <>
-      <SiteHeader locale={locale} t={t} />
+      <SiteHeader locale={locale} t={t} cases={cases} />
       <main id="conteudo">
         <CaseHero c={c} t={t} locale={locale} />
         <CaseSummary c={c} L={L} />

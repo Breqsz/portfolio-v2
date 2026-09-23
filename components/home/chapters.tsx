@@ -28,7 +28,7 @@ export function ChapterCarga({ locale, t, c, index }: Props) {
   return (
     <article id={c.slug} aria-labelledby={`${c.slug}-title`} className="on-dark mt-16 bg-night text-on-night lg:mt-24">
       <div className="shell grid-12 gap-y-14 py-24 lg:py-32">
-        <div className="col-span-12 lg:sticky lg:top-10 lg:col-span-5 lg:self-start lg:pr-4">
+        <div className="col-span-12 lg:sticky lg:top-[calc(var(--header-h)+2.5rem)] lg:col-span-5 lg:self-start lg:pr-4">
           <ChapterMeta index={index} c={c} tone="dark" />
           <ChapterTitle id={`${c.slug}-title`}>{c.hook}</ChapterTitle>
           <p className="mt-6 max-w-[46ch] text-lg text-on-night-2">{c.home.lead}</p>
@@ -49,7 +49,7 @@ export function ChapterHold({ locale, t, c, index }: Props) {
   return (
     <article id={c.slug} aria-labelledby={`${c.slug}-title`} className="bg-bg">
       <div className="shell grid-12 gap-y-14 py-24 lg:py-36">
-        <div className="col-span-12 lg:sticky lg:top-10 lg:col-span-5 lg:self-start lg:pr-4">
+        <div className="col-span-12 lg:sticky lg:top-[calc(var(--header-h)+2.5rem)] lg:col-span-5 lg:self-start lg:pr-4">
           <ChapterMeta index={index} c={c} />
           <ChapterTitle id={`${c.slug}-title`}>{c.hook}</ChapterTitle>
           <p className="mt-6 max-w-[46ch] text-lg text-ink-2">{c.home.lead}</p>
@@ -85,7 +85,7 @@ export function ChapterNeurorace({ locale, t, c, index }: Props) {
           </div>
           <MediaFrame media={sobre} sizes="(min-width: 1024px) 40vw, 100vw" className="mt-20 sm:w-[76%]" />
         </div>
-        <div className="order-1 col-span-12 lg:sticky lg:top-10 lg:order-2 lg:col-span-4 lg:col-start-9 lg:self-start">
+        <div className="order-1 col-span-12 lg:sticky lg:top-[calc(var(--header-h)+2.5rem)] lg:order-2 lg:col-span-4 lg:col-start-9 lg:self-start">
           <ChapterMeta index={index} c={c} />
           <ChapterTitle id={`${c.slug}-title`}>{c.hook}</ChapterTitle>
           <p className="mt-6 max-w-[46ch] text-lg text-ink-2">{c.home.lead}</p>

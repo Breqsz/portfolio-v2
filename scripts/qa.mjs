@@ -56,6 +56,25 @@ CHECKS.push({ name: "overflow /pt @1024", path: "/pt", width: 1024, height: 768,
 
 // --- checks das tasks seguintes são acrescentados abaixo desta linha ---
 
+CHECKS.push({
+  name: "header fixo continua no topo depois do scroll", path: "/pt", width: 1440, height: 900,
+  run: async (p) => {
+    await p.eval("window.scrollTo(0, 3000)"); await p.sleep(300);
+    const top = await p.eval("document.querySelector('header').getBoundingClientRect().top");
+    return top === 0 ? null : `header.top = ${top}`;
+  },
+});
+for (const [width, height] of [[1440, 900], [390, 844]]) {
+  CHECKS.push({
+    name: `âncora #hold fica abaixo do header @${width}`, path: "/pt#hold", width, height,
+    run: async (p) => {
+      await p.sleep(400);
+      const [h, t] = await p.eval("[document.querySelector('header').getBoundingClientRect().bottom, document.getElementById('hold').getBoundingClientRect().top]");
+      return t >= h - 1 ? null : `alvo em ${t}px, header termina em ${h}px`;
+    },
+  });
+}
+
 async function main() {
   const profile = mkdtempSync(join(tmpdir(), "qa-chrome-"));
   const chrome = spawn(CHROME, ["--headless=new", `--remote-debugging-port=${PORT}`, "--hide-scrollbars", `--user-data-dir=${profile}`, "about:blank"]);

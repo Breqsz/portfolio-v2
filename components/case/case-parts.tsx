@@ -130,7 +130,7 @@ export function CaseGallery({ media, label }: { media: Media[]; label: string })
 export function CaseSection({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
     <section aria-labelledby={id} className="grid-12 gap-y-6 border-t border-line py-14 lg:py-20">
-      <h2 id={id} className="col-span-12 text-xl font-bold tracking-[-0.015em] lg:sticky lg:top-8 lg:col-span-3 lg:self-start">
+      <h2 id={id} className="col-span-12 text-xl font-bold tracking-[-0.015em] lg:sticky lg:top-[calc(var(--header-h)+2rem)] lg:col-span-3 lg:self-start">
         {title}
       </h2>
       <div className="col-span-12 space-y-5 text-ink-2 lg:col-span-8 lg:col-start-5">{children}</div>

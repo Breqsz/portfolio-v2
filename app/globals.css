@@ -58,9 +58,16 @@
   --z-base: 0;
   --z-raised: 10;
   --z-header: 20;
+  --header-h: 3.5rem;
   --z-skip: 50;
   --gutter: clamp(1.25rem, 4vw, 4rem);
   --col-gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --header-h: 4rem;
+  }
 }
 
 @layer base {
@@ -102,7 +109,7 @@
     outline-color: var(--color-signal);
   }
   [id] {
-    scroll-margin-top: 1.5rem;
+    scroll-margin-top: calc(var(--header-h) + 1.5rem);
   }
 }
 
@@ -347,6 +354,31 @@
   transform-box: fill-box;
   transform-origin: center;
   animation: pulse-ring 1600ms var(--ease-out-quart) infinite;
+}
+
+/* Progresso de leitura: um fio de sinal na base do header. Sem suporte, não aparece. */
+.header-progress {
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--color-signal);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .header-progress {
+      animation: read-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+@keyframes read-progress {
+  to {
+    transform: scaleX(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
