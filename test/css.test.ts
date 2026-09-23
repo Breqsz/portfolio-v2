@@ -27,3 +27,9 @@ describe("mídia monocromática", () => {
     expect(block).toMatch(/@media \(hover: hover\) and \(pointer: fine\)/);
   });
 });
+
+describe("view transitions", () => {
+  it("reduced-motion desliga as transições de página", () => {
+    expect(css()).toMatch(/prefers-reduced-motion: reduce\)\s*\{[^}]*::view-transition-group\(\*\)/);
+  });
+});

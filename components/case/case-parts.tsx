@@ -1,10 +1,12 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { ViewTransition } from "react";
 import { ArrowLink } from "@/components/arrow-link";
 import { MediaFrame } from "@/components/media-frame";
 import type { CaseContent, Media, Metric } from "@/content/cases/types";
 import type { Dictionary } from "@/content/dictionary";
 import type { Locale } from "@/lib/i18n";
+import { vtName } from "@/lib/view-transition";
 
 type Labels = Dictionary["caseLabels"];
 
@@ -24,10 +26,14 @@ export function CaseHero({ c, t, locale }: { c: CaseContent; t: Dictionary; loca
           <p className="text-sm text-ink-2">
             {c.kind} · {c.year}
           </p>
-          <h1 className="mt-4 font-display text-[clamp(4rem,1.8rem+8.4vw,9rem)] font-extrabold uppercase leading-[0.86]">{c.name}</h1>
-          <p className="mt-8 max-w-[20ch] font-display text-[clamp(1.875rem,1.3rem+2.2vw,3.25rem)] font-bold leading-none text-signal-strong">
-            {c.hook}
-          </p>
+          <ViewTransition name={vtName.name(c.slug)}>
+            <h1 className="mt-4 font-display text-[clamp(4rem,1.8rem+8.4vw,9rem)] font-extrabold uppercase leading-[0.86]">{c.name}</h1>
+          </ViewTransition>
+          <ViewTransition name={vtName.hook(c.slug)}>
+            <p className="mt-8 max-w-[20ch] font-display text-[clamp(1.875rem,1.3rem+2.2vw,3.25rem)] font-bold leading-none text-signal-strong">
+              {c.hook}
+            </p>
+          </ViewTransition>
           <p className="mt-6 max-w-[58ch] text-lg text-ink-2">{c.problem}</p>
         </div>
         <dl className="col-span-12 self-end border-t border-line text-sm lg:col-span-4">
@@ -212,9 +218,11 @@ export function NextCase({ locale, next, L }: { locale: Locale; next: CaseConten
       <Link href={`/${locale}/work/${next.slug}`} className="group shell flex flex-col gap-3 py-16 lg:py-24">
         <span className="text-sm font-semibold text-ink-2">{L.next}</span>
         <span className="flex items-end justify-between gap-6">
-          <span className="font-display text-[clamp(3.5rem,2rem+7vw,8rem)] font-extrabold uppercase leading-[0.86] transition-colors duration-200 group-hover:text-signal-strong">
-            {next.name}
-          </span>
+          <ViewTransition name={vtName.name(next.slug)}>
+            <span className="font-display text-[clamp(3.5rem,2rem+7vw,8rem)] font-extrabold uppercase leading-[0.86] transition-colors duration-200 group-hover:text-signal-strong">
+              {next.name}
+            </span>
+          </ViewTransition>
           <ArrowRight aria-hidden="true" strokeWidth={1.5} className="mb-2 size-10 shrink-0 transition-transform duration-200 group-hover:translate-x-2" />
         </span>
         <span className="max-w-[48ch] text-ink-2">{next.hook}</span>

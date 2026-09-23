@@ -30,7 +30,7 @@ export function ChapterCarga({ locale, t, c, index }: Props) {
       <div className="shell grid-12 gap-y-14 py-24 lg:py-32">
         <div className="col-span-12 lg:sticky lg:top-[calc(var(--header-h)+2.5rem)] lg:col-span-5 lg:self-start lg:pr-4">
           <ChapterMeta index={index} c={c} tone="dark" />
-          <ChapterTitle id={`${c.slug}-title`}>{c.hook}</ChapterTitle>
+          <ChapterTitle id={`${c.slug}-title`} slug={c.slug}>{c.hook}</ChapterTitle>
           <p className="mt-6 max-w-[46ch] text-lg text-on-night-2">{c.home.lead}</p>
           <FactList facts={c.home.facts} tone="dark" className="mt-10" />
           <Actions locale={locale} t={t} c={c} />
@@ -51,7 +51,7 @@ export function ChapterHold({ locale, t, c, index }: Props) {
       <div className="shell grid-12 gap-y-14 py-24 lg:py-36">
         <div className="col-span-12 lg:sticky lg:top-[calc(var(--header-h)+2.5rem)] lg:col-span-5 lg:self-start lg:pr-4">
           <ChapterMeta index={index} c={c} />
-          <ChapterTitle id={`${c.slug}-title`}>{c.hook}</ChapterTitle>
+          <ChapterTitle id={`${c.slug}-title`} slug={c.slug}>{c.hook}</ChapterTitle>
           <p className="mt-6 max-w-[46ch] text-lg text-ink-2">{c.home.lead}</p>
           <FactList facts={c.home.facts} className="mt-10" />
           <Actions locale={locale} t={t} c={c} />
@@ -87,7 +87,7 @@ export function ChapterNeurorace({ locale, t, c, index }: Props) {
         </div>
         <div className="order-1 col-span-12 lg:sticky lg:top-[calc(var(--header-h)+2.5rem)] lg:order-2 lg:col-span-4 lg:col-start-9 lg:self-start">
           <ChapterMeta index={index} c={c} />
-          <ChapterTitle id={`${c.slug}-title`}>{c.hook}</ChapterTitle>
+          <ChapterTitle id={`${c.slug}-title`} slug={c.slug}>{c.hook}</ChapterTitle>
           <p className="mt-6 max-w-[46ch] text-lg text-ink-2">{c.home.lead}</p>
           <FactList facts={c.home.facts} className="mt-10" />
           <Actions locale={locale} t={t} c={c} />
@@ -104,7 +104,7 @@ export function ChapterAutofix({ locale, t, c, index }: Props) {
       <div className="shell grid-12 gap-y-14 py-24 lg:py-36">
         <div className="col-span-12 lg:col-span-5">
           <ChapterMeta index={index} c={c} />
-          <ChapterTitle id={`${c.slug}-title`}>{c.hook}</ChapterTitle>
+          <ChapterTitle id={`${c.slug}-title`} slug={c.slug}>{c.hook}</ChapterTitle>
           <p className="mt-6 max-w-[46ch] text-lg text-ink-2">{c.home.lead}</p>
           <FactList facts={c.home.facts} className="mt-10" />
           <Actions locale={locale} t={t} c={c} />

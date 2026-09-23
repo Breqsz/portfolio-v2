@@ -1,4 +1,7 @@
+import { ViewTransition } from "react";
 import type { CaseContent } from "@/content/cases/types";
+import type { CaseSlug } from "@/lib/site";
+import { vtName } from "@/lib/view-transition";
 
 type Tone = "light" | "dark";
 
@@ -19,11 +22,13 @@ export function ChapterMeta({ index, c, tone = "light" }: { index: number; c: Ca
   );
 }
 
-export function ChapterTitle({ id, children }: { id: string; children: React.ReactNode }) {
+export function ChapterTitle({ id, slug, children }: { id: string; slug: CaseSlug; children: React.ReactNode }) {
   return (
-    <h3 id={id} className="mt-6 max-w-[18ch] font-display text-3xl font-extrabold">
-      {children}
-    </h3>
+    <ViewTransition name={vtName.hook(slug)}>
+      <h3 id={id} className="mt-6 max-w-[18ch] font-display text-3xl font-extrabold">
+        {children}
+      </h3>
+    </ViewTransition>
   );
 }
 

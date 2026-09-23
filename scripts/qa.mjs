@@ -142,6 +142,21 @@ CHECKS.push({
   },
 });
 
+CHECKS.push({
+  name: "\"Ler o case completo\" navega com view transition", path: "/pt", width: 1440, height: 900,
+  run: async (p) => {
+    await p.eval(`(() => {
+      const start = document.startViewTransition?.bind(document);
+      if (!start) return;
+      document.startViewTransition = (arg) => ((window.__vt = (window.__vt ?? 0) + 1), start(arg));
+    })()`);
+    await p.eval("document.querySelector('#hold a[href$=\"/work/hold\"]').click()"); await p.sleep(1500);
+    const [path, vt, h1] = await p.eval("[location.pathname, window.__vt ?? 0, document.querySelector('h1')?.textContent]");
+    if (path !== "/pt/work/hold") return `foi para ${path}`;
+    return vt > 0 ? null : `sem startViewTransition (h1: ${h1})`;
+  },
+});
+
 async function main() {
   const profile = mkdtempSync(join(tmpdir(), "qa-chrome-"));
   const chrome = spawn(CHROME, ["--headless=new", `--remote-debugging-port=${PORT}`, "--hide-scrollbars", `--user-data-dir=${profile}`, "about:blank"]);
