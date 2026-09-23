@@ -1,0 +1,370 @@
+@import "tailwindcss";
+
+/*
+ * Identidade: papel quase neutro, tinta grafite e um laranja-vermelhão de
+ * sinalização. Fica longe do navy + azul elétrico + menta (dsguilherme), do
+ * preto puro + amarelo (Prumo) e do navy + crimson (Hold). Contraste medido:
+ * ink/bg 16.9 · ink-2/bg 7.3 · ink-3/bg 4.7 · signal/bg 3.7 (só texto grande)
+ * · ink/signal 4.6 · signal/night 4.9 · signal-strong/bg 5.5.
+ */
+@theme {
+  --color-bg: oklch(0.975 0.003 45);
+  --color-surface: oklch(0.945 0.004 45);
+  --color-line: oklch(0.87 0.005 45);
+  --color-ink: oklch(0.2 0.012 45);
+  --color-ink-2: oklch(0.44 0.012 45);
+  --color-ink-3: oklch(0.54 0.01 45);
+  --color-signal: oklch(0.62 0.186 42);
+  --color-signal-strong: oklch(0.52 0.156 42);
+  --color-night: oklch(0.17 0.008 45);
+  --color-night-2: oklch(0.215 0.008 45);
+  --color-night-line: oklch(0.32 0.008 45);
+  --color-on-night: oklch(0.95 0.004 45);
+  --color-on-night-2: oklch(0.74 0.008 45);
+  /* Preto medido nos cantos do retrato, para a foto se fundir à placa. */
+  --color-plate: #030302;
+  --color-badge: oklch(0.992 0.002 45);
+  --color-state-cabe: oklch(0.8 0.13 152);
+  --color-state-apertada: oklch(0.82 0.14 78);
+  --color-state-sem-margem: oklch(0.68 0.18 38);
+
+  --font-sans: var(--font-sofia), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sofia-xc), var(--font-sofia), ui-sans-serif, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.45;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.5;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.6;
+  --text-lg: clamp(1.1875rem, 1.05rem + 0.45vw, 1.4375rem);
+  --text-lg--line-height: 1.45;
+  --text-xl: clamp(1.5rem, 1.2rem + 1vw, 2.125rem);
+  --text-xl--line-height: 1.2;
+  --text-2xl: clamp(2.25rem, 1.5rem + 2.6vw, 3.75rem);
+  --text-2xl--line-height: 0.98;
+  --text-3xl: clamp(2.75rem, 1.6rem + 3.8vw, 5.25rem);
+  --text-3xl--line-height: 0.94;
+  /* Condensada: a mesma massa visual de uma grotesca a ~6rem. */
+  --text-hero: clamp(4.75rem, 1rem + 8.5vw, 9.5rem);
+  --text-hero--line-height: 0.86;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-quart: cubic-bezier(0.5, 0, 0.75, 0);
+}
+
+:root {
+  --z-base: 0;
+  --z-raised: 10;
+  --z-header: 20;
+  --z-skip: 50;
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --col-gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+@layer base {
+  html {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    font-kerning: normal;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--color-signal);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-signal-strong);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+  .on-dark :focus-visible {
+    outline-color: var(--color-signal);
+  }
+  [id] {
+    scroll-margin-top: 1.5rem;
+  }
+}
+
+@layer components {
+  .skip-link {
+    position: fixed;
+    left: 1rem;
+    top: 1rem;
+    z-index: var(--z-skip);
+    transform: translateY(-200%);
+    background: var(--color-ink);
+    color: var(--color-bg);
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    transition: transform 160ms var(--ease-out-quart);
+  }
+  .skip-link:focus {
+    transform: none;
+  }
+
+  .shell {
+    width: 100%;
+    max-width: 90rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--col-gap);
+  }
+
+  /* Sublinhado que cresce da esquerda: o link se anuncia sem gritar. */
+  .link-sweep {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 280ms var(--ease-out-quart);
+  }
+  .link-sweep:hover,
+  .link-sweep:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  .link-underline {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+    text-decoration-color: color-mix(in oklch, currentColor 35%, transparent);
+    transition: text-decoration-color 160ms var(--ease-out-quart);
+  }
+  .link-underline:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .arrow-nudge svg,
+  .arrow-nudge-down svg {
+    transition: transform 200ms var(--ease-out-quart);
+  }
+  .arrow-nudge:hover svg {
+    transform: translateX(3px);
+  }
+  .arrow-nudge[data-external]:hover svg {
+    transform: translate(2px, -2px);
+  }
+  .arrow-nudge-down:hover svg {
+    transform: translateY(3px);
+  }
+  .on-signal :focus-visible {
+    outline-color: var(--color-ink);
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Máscara da linha do título: folga em cima para o acento de "PRÁTICA". */
+  .mask-line {
+    display: block;
+    overflow: clip;
+    padding-top: 0.16em;
+    margin-top: -0.16em;
+  }
+  .mask-line > span {
+    display: block;
+    animation: rise 1000ms var(--ease-out-expo) both;
+    animation-delay: calc(var(--i, 0) * 110ms + 120ms);
+  }
+
+  .fade-up {
+    animation: fade-up 700ms var(--ease-out-quart) both;
+    animation-delay: calc(var(--i, 0) * 70ms + 560ms);
+  }
+
+  /* Controle deslizante do simulador (sobre fundo escuro). */
+  .range {
+    --fill: 50%;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 44px;
+    background: transparent;
+    cursor: pointer;
+    touch-action: pan-y;
+  }
+  .range:focus-visible {
+    outline: none;
+  }
+  .range::-webkit-slider-runnable-track {
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      var(--color-signal) var(--fill),
+      var(--color-night-line) var(--fill)
+    );
+  }
+  .range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    margin-top: -9px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--color-on-night);
+    transition:
+      transform 160ms var(--ease-out-quart),
+      box-shadow 160ms var(--ease-out-quart);
+  }
+  .range:active::-webkit-slider-thumb {
+    transform: scale(1.15);
+  }
+  .range:focus-visible::-webkit-slider-thumb {
+    box-shadow:
+      0 0 0 3px var(--color-night),
+      0 0 0 5px var(--color-signal);
+  }
+  .range::-moz-range-track {
+    height: 2px;
+    background: var(--color-night-line);
+  }
+  .range::-moz-range-progress {
+    height: 2px;
+    background: var(--color-signal);
+  }
+  .range::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--color-on-night);
+  }
+  .range:focus-visible::-moz-range-thumb {
+    box-shadow:
+      0 0 0 3px var(--color-night),
+      0 0 0 5px var(--color-signal);
+  }
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(108%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes clip-open {
+  from {
+    clip-path: inset(10% 5% 0 5%);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* Mídia que se abre ao entrar na tela — só onde há suporte nativo; sem ele, já está aberta. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-clip {
+      animation: clip-open linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+}
+
+/* Crachá da Hero: cai do cordão e balança de leve, girando pelo topo do cordão. */
+.badge-hang {
+  animation: hang-in 1100ms var(--ease-out-expo) 120ms both;
+}
+.badge-sway {
+  transform-origin: 50% 0;
+  animation: sway 4200ms ease-in-out 1300ms infinite alternate;
+}
+.badge-card {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    0 28px 44px -26px rgba(0, 0, 0, 0.32);
+}
+@keyframes hang-in {
+  from {
+    opacity: 0;
+    transform: translateY(-2.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sway {
+  from {
+    transform: rotate(-1.5deg);
+  }
+  to {
+    transform: rotate(1.5deg);
+  }
+}
+
+.pulse-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse-ring 1600ms var(--ease-out-quart) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .badge-sway {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .pulse-ring {
+    display: none;
+  }
+}
