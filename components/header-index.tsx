@@ -17,9 +17,16 @@ export function HeaderIndex({ locale, items, label }: Props) {
   useEffect(() => {
     const targets = items.map((i) => document.getElementById(i.slug)).filter((el): el is HTMLElement => el !== null);
     if (!targets.length) return;
+    // Guarda os capítulos na faixa de leitura: fora deles (Hero, Trajetória, Contato), nada fica ativo.
+    const inView = new Set<CaseSlug>();
     const io = new IntersectionObserver(
       (entries) => {
-        for (const e of entries) if (e.isIntersecting) setActive(e.target.id as CaseSlug);
+        for (const e of entries) {
+          const slug = e.target.id as CaseSlug;
+          if (e.isIntersecting) inView.add(slug);
+          else inView.delete(slug);
+        }
+        setActive(items.find((i) => inView.has(i.slug))?.slug ?? null);
       },
       { rootMargin: "-40% 0px -55% 0px" },
     );

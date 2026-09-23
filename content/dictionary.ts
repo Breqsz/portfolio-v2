@@ -21,6 +21,7 @@ const pt = {
     menu: "Menu",
     close: "Fechar",
     menuLabel: "Índice do site",
+    casesLabel: "Índice dos cases",
   },
   lang: {
     label: "Idioma",
@@ -208,6 +209,7 @@ const en: Dictionary = {
     menu: "Menu",
     close: "Close",
     menuLabel: "Site index",
+    casesLabel: "Case index",
   },
   lang: {
     label: "Language",

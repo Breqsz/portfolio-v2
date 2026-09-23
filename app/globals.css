@@ -394,10 +394,17 @@
   background: var(--color-bg);
   color: var(--color-ink);
   transform: translateY(100%);
-  transition:
-    transform 180ms var(--ease-in-quart),
-    overlay 180ms allow-discrete,
-    display 180ms allow-discrete;
+  transition: transform 180ms var(--ease-in-quart);
+}
+/* Sem `overlay`, o dialog sai do top layer na hora e o fixed passaria a valer em
+   relação ao header (o backdrop-filter dele cria containing block): sem saída animada. */
+@supports (overlay: auto) {
+  .sheet {
+    transition:
+      transform 180ms var(--ease-in-quart),
+      overlay 180ms allow-discrete,
+      display 180ms allow-discrete;
+  }
 }
 .sheet[open] {
   transform: none;

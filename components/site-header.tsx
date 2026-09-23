@@ -28,7 +28,7 @@ export function SiteHeader({ locale, t, cases }: Props) {
         </Link>
         <HeaderIndex
           locale={locale}
-          label={t.hero.indexLabel}
+          label={t.nav.casesLabel}
           items={caseSlugs.map((slug) => ({ slug, name: cases[slug].name }))}
         />
         <div className="flex items-center gap-5 md:gap-8">

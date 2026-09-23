@@ -18,13 +18,13 @@ export function MobileMenu({ items, t }: Props) {
   const close = () => ref.current?.close();
 
   return (
-    <div className="md:hidden">
+    <div>
       <button
         type="button"
         aria-controls="menu-mobile"
         aria-haspopup="dialog"
         onClick={() => ref.current?.showModal()}
-        className="inline-flex min-h-11 items-center border border-current/25 px-3 text-sm font-semibold"
+        className="inline-flex min-h-11 items-center border border-current/25 px-3 text-sm font-semibold md:hidden"
       >
         {t.menu}
       </button>
