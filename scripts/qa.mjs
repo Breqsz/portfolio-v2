@@ -92,9 +92,6 @@ CHECKS.push({
 for (const [width, height] of [[1440, 900], [390, 844]]) {
   CHECKS.push({
     name: `âncora #hold fica abaixo do header @${width}`, path: "/pt#hold", width, height,
-    // Deep link no celular pousa longe do alvo. Já acontece em produção, antes da F1:
-    // o capítulo Carga encolhe depois do carregamento. Fica visível como KNOWN até ser corrigido.
-    known: width < 600 ? "pré-existente: deep link no mobile" : undefined,
     run: async (p) => {
       await p.sleep(400);
       const [h, t] = await p.eval("[document.querySelector('header').getBoundingClientRect().bottom, document.getElementById('hold').getBoundingClientRect().top]");
@@ -202,6 +199,22 @@ CHECKS.push({
   },
 });
 
+// O gráfico do Carga é medido no cliente. Antes da hidratação ele precisa ter o tamanho
+// final: largo demais, alarga o layout viewport do celular e a âncora da URL pousa errado;
+// com outra altura, tudo abaixo dele pula depois do carregamento.
+for (const width of [390, 1440]) {
+  CHECKS.push({
+    name: `gráfico do Carga tem o mesmo tamanho antes e depois da hidratação @${width}`, path: "/pt", width, height: 844,
+    run: async (p) => {
+      const size = "(r => [Math.round(r.width), Math.round(r.height)])(document.querySelector('#carga svg[role=img]').getBoundingClientRect())";
+      const hydrated = await p.eval(size);
+      await p.withoutJs(async () => { await p.navigate("/pt"); await p.sleep(800); });
+      const server = await p.eval(size);
+      return server.join() === hydrated.join() ? null : `sem JS ${server.join("×")}, hidratado ${hydrated.join("×")}`;
+    },
+  });
+}
+
 async function main() {
   const profile = mkdtempSync(join(tmpdir(), "qa-chrome-"));
   const chrome = spawn(CHROME, ["--headless=new", `--remote-debugging-port=${PORT}`, "--hide-scrollbars", `--user-data-dir=${profile}`, "about:blank"]);
@@ -233,6 +246,13 @@ async function main() {
       const m = await send("Runtime.evaluate", { expression, awaitPromise, returnByValue: true });
       if (m.result?.exceptionDetails) throw new Error(m.result.exceptionDetails.exception?.description ?? "eval falhou");
       return m.result?.result?.value;
+    },
+    async navigate(path) {
+      await send("Page.navigate", { url: BASE + path });
+    },
+    async withoutJs(fn) {
+      await send("Emulation.setScriptExecutionDisabled", { value: true });
+      try { await fn(); } finally { await send("Emulation.setScriptExecutionDisabled", { value: false }); }
     },
     async resize(width, height) {
       await send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 1, mobile: width < 600 });

@@ -252,8 +252,10 @@ function SocChart({ a, t, locale }: { a: Assessment; t: T; locale: Locale }) {
   const label = fill(t.chartLabel, { start: num(a.input.startSocPct), end: num(a.endSocPct) });
 
   return (
-    <div ref={ref} className="mt-6 w-full">
-      <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} className="block text-on-night">
+    // O tamanho vem do CSS desde o HTML do servidor: os 640 px iniciais alargavam o layout
+    // viewport do celular até a medição. A altura segue o mesmo limiar de 480 px do JS.
+    <div ref={ref} className="@container mt-6 w-full">
+      <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} className="block h-50 w-full text-on-night @min-[480px]:h-60">
         <defs>
           <clipPath id={`${ids}above`}>
             <rect x="0" y="0" width={width} height={reserveY} />
