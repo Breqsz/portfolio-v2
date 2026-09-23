@@ -37,6 +37,14 @@ describe("paridade entre idiomas", () => {
   it("o dicionário tem as mesmas chaves nos dois idiomas", () => {
     expect(shape(dictionary.en)).toEqual(shape(dictionary.pt));
   });
+
+  it("cada case tem o mesmo status nos dois idiomas, e o status bate com a natureza do trabalho", () => {
+    const expected = { carga: "study", hold: "live", neurorace: "live", autofix: "demo" } as const;
+    for (const slug of caseSlugs) {
+      expect(casesPt[slug].status).toBe(expected[slug]);
+      expect(casesEn[slug].status).toBe(expected[slug]);
+    }
+  });
 });
 
 describe("higiene do conteúdo público", () => {

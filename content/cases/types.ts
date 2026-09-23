@@ -19,10 +19,14 @@ export type Metric = {
 
 export type FlowNode = { title: string; detail?: string; planned?: boolean };
 
+/** Estado público do trabalho: no ar para quem quiser ver, demo sob acesso, ou estudo sem produção. */
+export type CaseStatus = "live" | "demo" | "study";
+
 export type CaseContent = {
   slug: CaseSlug;
   name: string;
   kind: string;
+  status: CaseStatus;
   year: string;
   role: string;
   /** A frase de capítulo. */

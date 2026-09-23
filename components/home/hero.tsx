@@ -1,5 +1,6 @@
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { Badge } from "@/components/home/badge";
+import { StatusDot } from "@/components/status-dot";
 import type { CaseBook } from "@/content/cases/types";
 import type { Dictionary } from "@/content/dictionary";
 import { SITE, caseSlugs } from "@/lib/site";
@@ -92,7 +93,10 @@ export function Hero({ t, cases }: Props) {
                     </span>
                   </span>
                   <span className="text-sm text-ink-2">{c.hook}</span>
-                  <span className="mt-auto pt-1 text-xs text-ink-3">{c.kind}</span>
+                  <span className="mt-auto flex items-center gap-2 pt-1 text-xs text-ink-3">
+                    <StatusDot status={c.status} />
+                    {c.kind}
+                  </span>
                 </a>
               </li>
             );
