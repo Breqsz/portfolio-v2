@@ -18,10 +18,24 @@ const noOverflow = async (page) => {
   return sw > iw ? `overflow horizontal: ${sw}px > ${iw}px` : null;
 };
 
+// Espera as animações de entrada (finitas, na linha do tempo do documento): o axe
+// mede contraste com a opacidade do momento, e um fade no meio vira falso positivo.
+const settle = (page) =>
+  page.eval(
+    `Promise.race([
+      Promise.all(document.getAnimations()
+        .filter((a) => a.timeline instanceof DocumentTimeline && a.effect?.getComputedTiming().iterations !== Infinity)
+        .map((a) => a.finished.catch(() => {}))),
+      new Promise((r) => setTimeout(r, 5000)),
+    ]).then(() => 0)`,
+    true,
+  );
+
 const axe = async (page) => {
+  await settle(page);
   await page.eval(AXE + ";0");
   const res = await page.eval(
-    `axe.run(document, { runOnly: ["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"] }).then(r => r.violations.map(v => v.id + " (" + v.nodes.length + ")"))`,
+    `axe.run(document, { runOnly: ["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"] }).then(r => r.violations.map(v => v.id + " [" + v.nodes.map(n => n.target.join(" ")).join("; ") + "]"))`,
     true,
   );
   return res.length ? `axe: ${res.join(", ")}` : null;
@@ -90,6 +104,9 @@ async function main() {
     consoleErrors.length = 0;
     await send("Emulation.setDeviceMetricsOverride", { width: c.width, height: c.height, deviceScaleFactor: 1, mobile: c.width < 600 });
     await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: c.reducedMotion ? "reduce" : "no-preference" }] });
+    // Documento novo a cada check: sem isso, /pt → /pt#hold vira navegação no mesmo documento.
+    await send("Page.navigate", { url: "about:blank" });
+    await sleep(100);
     await send("Page.navigate", { url: BASE + c.path });
     await sleep(1800);
     let msg;
