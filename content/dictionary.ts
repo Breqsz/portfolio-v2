@@ -18,6 +18,9 @@ const pt = {
     work: "Trabalho",
     path: "Trajetória",
     contact: "Contato",
+    menu: "Menu",
+    close: "Fechar",
+    menuLabel: "Índice do site",
   },
   lang: {
     label: "Idioma",
@@ -199,6 +202,9 @@ const en: Dictionary = {
     work: "Work",
     path: "Background",
     contact: "Contact",
+    menu: "Menu",
+    close: "Close",
+    menuLabel: "Site index",
   },
   lang: {
     label: "Language",

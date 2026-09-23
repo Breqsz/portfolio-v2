@@ -381,6 +381,41 @@
   }
 }
 
+/* Menu mobile: folha que sobe do polegar. Entrada 280 ms, saída 180 ms. */
+.sheet {
+  position: fixed;
+  inset: auto 0 0 0;
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  max-height: 85dvh;
+  padding: 0;
+  border: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  transform: translateY(100%);
+  transition:
+    transform 180ms var(--ease-in-quart),
+    overlay 180ms allow-discrete,
+    display 180ms allow-discrete;
+}
+.sheet[open] {
+  transform: none;
+  transition-duration: 280ms;
+  transition-timing-function: var(--ease-out-expo);
+}
+@starting-style {
+  .sheet[open] {
+    transform: translateY(100%);
+  }
+}
+.sheet::backdrop {
+  background: color-mix(in oklch, var(--color-night) 55%, transparent);
+}
+html:has(.sheet[open]) {
+  overflow: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

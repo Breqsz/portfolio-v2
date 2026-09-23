@@ -56,6 +56,21 @@ CHECKS.push({ name: "overflow /pt @1024", path: "/pt", width: 1024, height: 768,
 
 // --- checks das tasks seguintes são acrescentados abaixo desta linha ---
 
+// Um toque real foca o botão antes do clique; o .click() por JS não, e sem foco
+// anterior o <dialog> não tem para onde devolver o foco ao fechar.
+const TAP_MENU = "(b => (b.focus(), b.click()))(document.querySelector('[aria-controls=\"menu-mobile\"]'))";
+
+// Scroll suave numa página longa leva mais de um segundo: espera o scrollY parar.
+async function scrollSettled(p, timeout = 5000) {
+  let last = -1;
+  for (let t = 0; t < timeout; t += 150) {
+    await p.sleep(150);
+    const y = await p.eval("scrollY");
+    if (y === last) return;
+    last = y;
+  }
+}
+
 CHECKS.push({
   name: "header fixo continua no topo depois do scroll", path: "/pt", width: 1440, height: 900,
   run: async (p) => {
@@ -74,6 +89,34 @@ for (const [width, height] of [[1440, 900], [390, 844]]) {
     },
   });
 }
+
+CHECKS.push({
+  name: "menu mobile abre, fecha com Esc e devolve o foco", path: "/pt", width: 390, height: 844,
+  run: async (p) => {
+    const visible = await p.eval("!!document.querySelector('[aria-controls=\"menu-mobile\"]')?.offsetParent");
+    if (!visible) return "botão do menu não está visível em 390px";
+    await p.eval(TAP_MENU); await p.sleep(400);
+    if (!(await p.eval("document.getElementById('menu-mobile').open"))) return "o dialog não abriu";
+    await p.key("Escape"); await p.sleep(300);
+    if (await p.eval("document.getElementById('menu-mobile').open")) return "Esc não fechou";
+    const back = await p.eval("document.activeElement?.getAttribute('aria-controls')");
+    return back === "menu-mobile" ? null : `foco foi para ${back}`;
+  },
+});
+CHECKS.push({
+  name: "link do menu fecha a folha e rola até o alvo", path: "/pt", width: 390, height: 844,
+  run: async (p) => {
+    await p.eval(TAP_MENU); await p.sleep(400);
+    await p.eval("document.querySelector('#menu-mobile a[href$=\"#contato\"]').click()"); await scrollSettled(p);
+    const [open, top] = await p.eval("[document.getElementById('menu-mobile').open, document.getElementById('contato').getBoundingClientRect().top]");
+    if (open) return "o menu continuou aberto";
+    return top < 300 ? null : `#contato ficou em ${top}px`;
+  },
+});
+CHECKS.push({
+  name: "botão do menu some no desktop", path: "/pt", width: 1440, height: 900,
+  run: async (p) => ((await p.eval("!!document.querySelector('[aria-controls=\"menu-mobile\"]')?.offsetParent")) ? "botão visível em 1440px" : null),
+});
 
 async function main() {
   const profile = mkdtempSync(join(tmpdir(), "qa-chrome-"));
