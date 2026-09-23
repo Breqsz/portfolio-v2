@@ -45,6 +45,11 @@ describe("paridade entre idiomas", () => {
       expect(casesEn[slug].status).toBe(expected[slug]);
     }
   });
+
+  it("a home não tem mais a frase de abertura da seção Trabalho", () => {
+    expect("intro" in dictionary.pt.work).toBe(false);
+    expect("intro" in dictionary.en.work).toBe(false);
+  });
 });
 
 describe("higiene do conteúdo público", () => {

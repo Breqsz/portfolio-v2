@@ -59,12 +59,9 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
         <Hero t={t} cases={cases} />
 
         <section id="trabalho" aria-labelledby="trabalho-title">
-          <div className="shell grid-12 gap-y-6 pb-16 pt-24 lg:pb-24 lg:pt-36">
-            <h2 id="trabalho-title" className="col-span-12 text-2xl font-bold tracking-[-0.02em] lg:col-span-6">
-              {t.work.title}
-            </h2>
-            <p className="col-span-12 max-w-[40ch] self-end text-lg text-ink-2 lg:col-span-4 lg:col-start-9">{t.work.intro}</p>
-          </div>
+          <h2 id="trabalho-title" className="sr-only">
+            {t.work.title}
+          </h2>
           <ChapterCarga locale={locale} t={t} c={cases.carga} index={1} />
           <ChapterHold locale={locale} t={t} c={cases.hold} index={2} />
           <ChapterNeurorace locale={locale} t={t} c={cases.neurorace} index={3} />

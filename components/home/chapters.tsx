@@ -26,7 +26,7 @@ function Actions({ locale, t, c }: Omit<Props, "index">) {
 /** Carga: o único capítulo escuro, porque é onde está o experimento. */
 export function ChapterCarga({ locale, t, c, index }: Props) {
   return (
-    <article id={c.slug} aria-labelledby={`${c.slug}-title`} className="on-dark bg-night text-on-night">
+    <article id={c.slug} aria-labelledby={`${c.slug}-title`} className="on-dark mt-16 bg-night text-on-night lg:mt-24">
       <div className="shell grid-12 gap-y-14 py-24 lg:py-32">
         <div className="col-span-12 lg:sticky lg:top-10 lg:col-span-5 lg:self-start lg:pr-4">
           <ChapterMeta index={index} c={c} tone="dark" />

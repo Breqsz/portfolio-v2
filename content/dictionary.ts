@@ -46,7 +46,6 @@ const pt = {
   },
   work: {
     title: "O trabalho, de perto.",
-    intro: "Quatro contextos. Decisões diferentes. O mesmo cuidado em fazer funcionar.",
     readCase: "Ler o case completo",
     newTab: "abre em nova aba",
     ceilingLabel: "O teto, escrito no código",
@@ -228,7 +227,6 @@ const en: Dictionary = {
   },
   work: {
     title: "A closer look at the work.",
-    intro: "Four contexts. Different decisions. The same care in making things work.",
     readCase: "Read the full case",
     newTab: "opens in a new tab",
     ceilingLabel: "The ceiling, written into the code",
