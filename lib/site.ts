@@ -7,7 +7,7 @@ export const SITE = {
   initials: "GRB",
   email: "guirochabianchini@gmail.com",
   linkedin: "https://www.linkedin.com/in/guilhermebreq",
-  source: "https://github.com/Breqsz/portfoliov2",
+  source: "https://github.com/Breqsz/portfolio-v2",
 } as const;
 
 export const caseSlugs = ["carga", "hold", "neurorace", "autofix"] as const;
