@@ -11,3 +11,13 @@ export function formatNumber(locale: Locale, value: number, digits = 0): string 
     maximumFractionDigits: digits,
   }).format(value);
 }
+
+/** Hora local de São Paulo, 24 h. Serve ao recrutador de outro fuso. */
+export function saoPauloTime(date: Date, locale: Locale): string {
+  return new Intl.DateTimeFormat(htmlLang[locale], {
+    timeZone: "America/Sao_Paulo",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).format(date);
+}

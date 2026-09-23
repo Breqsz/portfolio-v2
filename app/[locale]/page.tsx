@@ -70,7 +70,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
 
         <Trajectory t={t} />
         <Capabilities locale={locale} t={t} cases={cases} />
-        <Contact t={t} />
+        <Contact t={t} locale={locale} />
       </main>
       <SiteFooter t={t} />
       <script

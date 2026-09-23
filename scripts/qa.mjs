@@ -118,6 +118,16 @@ CHECKS.push({
   run: async (p) => ((await p.eval("!!document.querySelector('[aria-controls=\"menu-mobile\"]')?.offsetParent")) ? "botão visível em 1440px" : null),
 });
 
+CHECKS.push({
+  name: "hora de São Paulo aparece no contato sem erro de hidratação", path: "/pt", width: 1440, height: 900,
+  run: async (p) => {
+    const txt = await p.eval("document.querySelector('#contato time')?.textContent");
+    if (!/^\d{2}:\d{2}$/.test(txt ?? "")) return `hora = ${txt}`;
+    const hyd = p.consoleErrors.find((e) => /hydrat/i.test(e));
+    return hyd ? `hidratação: ${hyd}` : null;
+  },
+});
+
 async function main() {
   const profile = mkdtempSync(join(tmpdir(), "qa-chrome-"));
   const chrome = spawn(CHROME, ["--headless=new", `--remote-debugging-port=${PORT}`, "--hide-scrollbars", `--user-data-dir=${profile}`, "about:blank"]);

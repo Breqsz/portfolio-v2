@@ -140,6 +140,9 @@ const pt = {
   },
   contact: {
     title: "Qual problema seu time está resolvendo?",
+    status: "Aberto a oportunidades · CLT ou PJ",
+    city: "São Paulo",
+    timeLabel: "Hora em São Paulo",
     body: "Estou aberto a oportunidades em engenharia de software, CLT ou PJ. O caminho mais rápido é um e-mail.",
     email: "Escrever um e-mail",
     copy: "Copiar endereço",
@@ -324,6 +327,9 @@ const en: Dictionary = {
   },
   contact: {
     title: "What problem is your team solving?",
+    status: "Open to opportunities · full-time or contract",
+    city: "São Paulo",
+    timeLabel: "Time in São Paulo",
     body: "I'm open to software engineering roles. The fastest way to reach me is email.",
     email: "Send an email",
     copy: "Copy address",

@@ -1,14 +1,24 @@
 import { ArrowUpRight } from "lucide-react";
 import { CopyEmail } from "@/components/copy-email";
+import { LocalTime } from "@/components/local-time";
 import type { Dictionary } from "@/content/dictionary";
+import type { Locale } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
 
 /** O único bloco em cor cheia: a pergunta que encerra toda página. */
-export function Contact({ t }: { t: Dictionary }) {
+export function Contact({ t, locale }: { t: Dictionary; locale: Locale }) {
   const { contact } = t;
   return (
     <section id="contato" aria-labelledby="contato-title" className="on-signal bg-signal text-ink">
       <div className="shell py-24 lg:py-36">
+        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-semibold lg:mb-12">
+          <span aria-hidden="true" className="inline-block size-2 rounded-full bg-ink" />
+          <span>{contact.status}</span>
+          <span aria-hidden="true">·</span>
+          <span>
+            {contact.city} <LocalTime locale={locale} label={contact.timeLabel} />
+          </span>
+        </p>
         <h2 id="contato-title" className="max-w-[15ch] font-display text-[clamp(3.25rem,1.6rem+6.6vw,9rem)] font-extrabold leading-[0.9]">
           {contact.title}
         </h2>

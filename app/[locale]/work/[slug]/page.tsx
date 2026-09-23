@@ -128,7 +128,7 @@ export default async function CasePage({ params }: PageProps<"/[locale]/work/[sl
         </div>
 
         <NextCase locale={locale} next={next} L={L} />
-        <Contact t={t} />
+        <Contact t={t} locale={locale} />
       </main>
       <SiteFooter t={t} />
     </>
