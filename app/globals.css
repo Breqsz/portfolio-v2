@@ -416,6 +416,54 @@ html:has(.sheet[open]) {
   overflow: hidden;
 }
 
+/* Mídia monocromática: a captura do cliente não sequestra a paleta.
+   A cor chega quando a imagem cruza o centro da tela ou recebe o ponteiro. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* A timeline é da moldura: o overflow-hidden dela vira scroll container, e um
+       view() na própria imagem mediria a imagem dentro da moldura, travado em 50%. */
+    .media-mono {
+      view-timeline: --media-frame block;
+    }
+    .media-mono img {
+      animation: media-tint linear both;
+      animation-timeline: --media-frame;
+      animation-range: cover 0% cover 100%;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .media-mono:hover img {
+        animation: none;
+        filter: none;
+      }
+    }
+  }
+}
+@supports not (animation-timeline: view()) {
+  @media (hover: hover) and (pointer: fine) {
+    .media-mono img {
+      filter: grayscale(1) sepia(0.12);
+      transition: filter 400ms var(--ease-out-quart);
+    }
+    .media-mono:hover img {
+      filter: none;
+    }
+  }
+}
+@keyframes media-tint {
+  0%,
+  22% {
+    filter: grayscale(1) sepia(0.12);
+  }
+  42%,
+  62% {
+    filter: none;
+  }
+  82%,
+  100% {
+    filter: grayscale(1) sepia(0.12);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

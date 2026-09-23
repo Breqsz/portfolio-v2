@@ -15,7 +15,7 @@ export function MediaFrame({ media, sizes, className = "", caption = true, tone 
   return (
     <figure className={className}>
       <div
-        className={`reveal-clip overflow-hidden border ${
+        className={`reveal-clip media-mono overflow-hidden border ${
           tone === "dark" ? "border-night-line bg-night-2" : "border-line bg-surface"
         }`}
       >

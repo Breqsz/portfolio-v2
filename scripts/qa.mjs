@@ -128,6 +128,20 @@ CHECKS.push({
   },
 });
 
+CHECKS.push({
+  name: "mídia ganha cor no centro e fica mono na borda da tela", path: "/pt", width: 1440, height: 900,
+  run: async (p) => {
+    const filter = "getComputedStyle(document.querySelector('#hold .media-mono img')).filter";
+    const frame = "document.querySelector('#hold .media-mono')";
+    await p.eval(`${frame}.scrollIntoView({ block: "center", behavior: "instant" })`); await p.sleep(300);
+    const center = await p.eval(filter);
+    await p.eval(`window.scrollBy({ top: ${frame}.getBoundingClientRect().top - innerHeight + 40, behavior: "instant" })`); await p.sleep(300);
+    const edge = await p.eval(filter);
+    if (center !== "none") return `no centro: ${center}`;
+    return /grayscale/.test(edge) ? null : `na borda: ${edge}`;
+  },
+});
+
 async function main() {
   const profile = mkdtempSync(join(tmpdir(), "qa-chrome-"));
   const chrome = spawn(CHROME, ["--headless=new", `--remote-debugging-port=${PORT}`, "--hide-scrollbars", `--user-data-dir=${profile}`, "about:blank"]);

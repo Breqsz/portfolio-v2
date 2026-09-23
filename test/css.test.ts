@@ -13,3 +13,17 @@ describe("header fixo", () => {
     expect(block).toMatch(/\.header-progress/);
   });
 });
+
+describe("mídia monocromática", () => {
+  it("todo grayscale está atrás de scroll-timeline ou de hover fino, nunca solto", () => {
+    const text = css();
+    const tint = text.slice(text.indexOf("/* Mídia monocromática"));
+    expect(tint.length).toBeGreaterThan(40);
+    const top = tint.split(/@supports|@media/)[0];
+    expect(top).not.toMatch(/grayscale/);
+  });
+  it("sem suporte a scroll-timeline, o cinza só aparece com hover fino", () => {
+    const block = css().split("@supports not (animation-timeline: view())")[1] ?? "";
+    expect(block).toMatch(/@media \(hover: hover\) and \(pointer: fine\)/);
+  });
+});
